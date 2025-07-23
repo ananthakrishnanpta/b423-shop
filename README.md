@@ -134,9 +134,22 @@
 - `manage.py` is a shortcut to the django-admin.
     - major management tasks for the django project will be handled through this python script.
 
-- Create app
+## 1. Create app - initialize a new app
 - `python manage.py startapp <app_name>`
 - Eg: `python manage.py startapp mainapp`
+- *Please take care to ensure that no other inbuilt apps or packages exist of the same name.*
+
+## 2. Create app specific `urls.py`
+- This practice helps us handle the urlpatterns in a more divided fashion.
+- Create a new `urls.py` file inside the app folder.
+
+- **Including this URLconf in the project urls.py**
+    - In the project `urls.py` inside the project root folder,
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
+    For example, now our project urls.py becomes:
+
 
 
 
