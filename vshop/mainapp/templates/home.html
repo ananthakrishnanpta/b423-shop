@@ -11,5 +11,24 @@
         {% include 'includes/carousel.html' %}
     {% endcomment %}
 </section>
+<section class="container">
+    {% for product in products %}
+    <div class="card">
+        <div class="card-img">
+            <img src="{{product.image.url}}" alt="">
+        </div>
+        <div class="card-body">
+            <div class="card-title">
+                {{product.title}}
+            </div>
+            <div class="card-text">
+                <span>Rs.{{product.price}}</span>
+            </div>
+            <a href="" class="btn btn-primary">Add to Cart</a>
+        </div>
+    </div>
+    {% endfor %}
+
+</section>
 
 {% endblock %}
