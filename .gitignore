@@ -1,5 +1,5 @@
 virt/
-
+.env
 secrets.txt
 
 db.sqlite3
