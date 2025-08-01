@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
   <body>
-    <header class="position-fixed top-0 w-100">
+    <header class="position-fixed top-0 w-100 z-5">
         {% include 'includes/navBar.html' %}
     </header>
-    <main>
+    <main class="z-0">
         {% block content %}
         {% endblock %}
     </main>

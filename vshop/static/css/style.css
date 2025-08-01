@@ -6,6 +6,7 @@
 
 body {
     header {
+        z-index: 10;
         height: 50px;
         nav {
             height: 100%;
