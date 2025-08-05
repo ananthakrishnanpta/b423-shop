@@ -6,12 +6,16 @@ from django.contrib.auth.models import User
 
 from django.urls import reverse_lazy
 
+# importing custom form
+from .forms import CustomLoginForm, CustomRegisterForm
+
 # Create your views here.
 class CustomLoginView(LoginView):
     template_name = 'login.html'
+    form_class = CustomLoginForm
 
 class CustomRegisterView(CreateView):
-    model = User 
-    fields = ['username', 'password']
+    form_class = CustomRegisterForm
     template_name = 'register.html'
-    success_url = reverse_lazy('signin')
+    # find the sign-in page path on successful registration and send the user there
+    success_url = reverse_lazy('signin') 
