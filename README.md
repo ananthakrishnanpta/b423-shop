@@ -1,6 +1,7 @@
 - For every new project in Django
 
 ## Project Setup
+---
 
 
 1. Create a folder for the project 
