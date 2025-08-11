@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{user.username.capitalize}}'s Cart
+{% endblock %}
+
+
+{% block content %}
+
+<section class="cart-container">
+    <table class="table">
+        <thead>
+            <th>
+            </th>
+            <th>
+                Product
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Sub Total
+            </th>
+            <th>
+
+            </th>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr id="item-#{{item.id}}">
+                <th>
+                    {{forloop.counter}}
+                </th>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img src="{{item.product.image.url}}"
+                                style="height: 100px; aspect-ratio: 1/1; object-fit: contain; background-color: black;"
+                                alt="">
+                        </div>
+                        <div class="col-sm-8">
+                            {{item.product.title.capitalize}}
+                        </div>
+
+                    </div>
+
+                </td>
+                <td>
+                    {{item.product.price}}
+                </td>
+                <td>
+                    <i class="bi bi-dash-circle"></i>
+                    <span id="item-quantity-#{{item.id}}">
+                        {{item.quantity}}
+                    </span>
+                    <i class="bi bi-plus-circle"></i>
+                </td>
+                <td id="sub-total-#{{item.id}}">
+                    {{item.sub_total}}
+                </td>
+                <td>
+                    <a href="" class="btn btn-outline-success">Remove From Cart</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <th>
+                    Total:Rs. <span id="total-price">{{total_price}}</span>
+                </th>
+                <th>
+                    <a href="" class="btn btn-warning col">Place Order</a>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="container-fluid text-center">
+        <a href="{% url 'homepage' %}" class="btn btn-success">Shop More</a>
+
+    </div>
+
+
+</section>
+
+{% endblock %}
