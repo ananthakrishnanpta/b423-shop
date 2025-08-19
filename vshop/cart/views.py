@@ -27,4 +27,19 @@ def addToCart(request, product_id):
     
     return redirect(reverse_lazy('my_cart'))
 
+def remFromCart(request, cart_item_id):
+    this_cart_item = CartItem.objects.get(id = cart_item_id)
+    this_cart_item.delete()
+    return redirect(reverse_lazy('my_cart'))
 
+
+def addQuant(request, cart_item_id):
+    this_cart_item = CartItem.objects.get(id = cart_item_id)
+    this_cart_item.quantity += 1
+    this_cart_item.save()
+    context = {
+        'quantity': this_cart_item.quantity,
+        'sub_total' : this_cart_item.sub_total,
+        'total_price' : len(CartItem.objects.filter(user = request.user))
+    }
+    

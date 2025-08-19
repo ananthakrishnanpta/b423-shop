@@ -18,6 +18,11 @@ class HomeView(ListView):
     template_name = 'home.html'
     context_object_name = 'products'
 
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['search_bar'] = True
+        return context
+
 def aboutView(request):
     template = 'about.html'
     context = {
@@ -56,5 +61,14 @@ class DeleteProduct(DeleteView):
 
 
 
+def searchView(request):
+    query = request.GET.get('q')
+    result_products = Product.objects.filter(title__icontains = query)
+    context = {
+        'query' : query,
+        'products' : result_products
+    }
+    template = 'search_results.html'
 
+    return render(request, template, context)
 
