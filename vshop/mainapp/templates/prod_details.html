@@ -21,9 +21,12 @@
 
 
             <div class="row">
-                <a href="" class="col-sm-4 btn btn-primary">Add to Cart</a>
-                <a href="{% url 'updateproduct' product.pk %}" class="col-sm-4 btn btn-warning">Update</a>
-                <a href="{% url 'deleteproduct' product.pk %}" class="col-sm-4 btn btn-danger">Delete</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'updateproduct' product.pk %}" class="col-sm-4 btn btn-warning">Update</a>
+                    <a href="{% url 'deleteproduct' product.pk %}" class="col-sm-4 btn btn-danger">Delete</a>
+                {% else %}
+                    <a href="" class="col-sm-4 btn btn-primary">Add to Cart</a>
+                {% endif %}
             </div>
 
         </div>
