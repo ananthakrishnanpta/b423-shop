@@ -1,82 +1,80 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
-{{ user.username|capfirst }}'s Cart
+{{user}}'s Cart
+
 {% endblock %}
 
 {% block content %}
-<section class="cart-container container my-4">
-    <h2 class="mb-4 cart-title">Shopping Cart</h2>
 
-    <div class="table-responsive">
-        <table class="table table-borderless align-middle">
-            <thead class="cart-header">
-                <tr>
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr id="item-#{{item.id}}" class="cart-row">
-                    <td>{{ forloop.counter }}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="{{ item.product.image.url }}"
-                                 class="cart-product-img me-3"
-                                 alt="{{ item.product.title }}">
-                            <div class="cart-product-title">
-                                <a href="{% url 'prod_details' item.product.pk %}">
-                                {{ item.product.title|capfirst }}
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="cart-price">₹{{ item.product.price }}</td>
-                    <td>
-                        <div class="cart-quantity d-flex align-items-center">
-                            <i class="bi bi-dash-circle quantity-btn"></i>
-                            <span class="mx-2" id="item-quantity-#{{item.id}}">
-                                {{ item.quantity }}
-                            </span>
-                            <i class="bi bi-plus-circle quantity-btn"></i>
-                        </div>
-                    </td>
-                    <td id="sub-total-#{{item.id}}" class="cart-subtotal">
-                        ₹{{ item.sub_total }}
-                    </td>
-                    <td>
-                        <a href="{% url 'rem_from_cart' item.id %}" class="btn btn-sm btn-outline-danger">
-                            Remove
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot class="cart-footer">
-                <tr>
-                    <td colspan="4" class="text-end fw-bold">Total:</td>
-                    <td class="fw-bold fs-5 text-danger">
-                        ₹<span id="total-price">{{ total_price }}</span>
-                    </td>
-                    <td>
-                        <a href="{% url 'create_order' %}" class="btn btn-warning w-100 fw-bold">
-                            Proceed to Buy
-                        </a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+<div class="container-fluid">
+    {% if items %}
 
-    <div class="text-center mt-4">
-        <a href="{% url 'homepage' %}" class="btn btn-success">
-            Continue Shopping
-        </a>
-    </div>
-</section>
+    <table class="table">
+        <thead>
+            <th>
+    
+            </th>
+            <th>
+                Product
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Sub Total
+            </th>
+            <th>
+    
+            </th>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr class="h-10" id="cart-item-{{item.id}}">
+                <td class="w-auto">
+                    {% if item.product.image %}
+                        <img src="{{item.product.image.url}}" height="20px" alt="An image of {{item.product.name}}">
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'prod_details' item.product.id %}">{{item.product.name }}</a>
+                </td>
+                <td>
+                    {{item.product.price}}
+                </td>
+                <td class="grid">
+                    <div class="row w-100">            
+                    <button onclick="updateCart('{% url 'rem_quantity' item.id %}', {{ item.id }}, false, '{{ csrf_token }}')" class="btn btn-outline-secondary col align-middle">
+                        -
+                    </button>
+                        <p id="quantity-{{ item.id }}" class="col align-middle text-center">{{item.quantity}}</p>
+
+                    <button onclick="updateCart('{% url 'add_quantity' item.id %}', {{ item.id }}, true, '{{ csrf_token }}')" class="btn btn-outline-secondary col align-middle">+</button>
+                    </div>
+                </td>
+                <td id="total-price-{{ item.id }}">
+                    {{item.get_total}}
+                </td>
+                <td>
+                    <a href="{% url 'rem_from_cart' item.id %}" class="btn btn-danger">Remove from Cart</a>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th colspan="4" class="text-center text-warning bg-dark">Total</th>
+                <td class="bg-secondary"><strong>Rs.<span id="overall-total">{{ total }}</span></strong></td>
+                <td><a href="{% url 'create_order' %}" class="btn btn-primary">Place Your Order</a></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    {% else %}
+    Cart is Empty!!!
+    {% endif %}
+    <a href="{% url 'homepage' %}" class="btn btn-primary">Shop More!!!</a>
+</div>
+
 {% endblock %}
