@@ -19,7 +19,7 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'my_cart' %}">{{user.username.capitalize}}'s Cart</a>
+          <a class="nav-link active" href="{% url 'view_cart' %}">{{user.username.capitalize}}'s Cart</a>
         </li>
         {% endif %}
         {% endif %}

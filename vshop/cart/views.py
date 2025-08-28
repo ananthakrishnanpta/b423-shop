@@ -1,42 +1,51 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-
-from mainapp.models import Product
-from django.contrib.auth.decorators import login_required
-
+from django.template import loader
 from .models import CartItem
+from mainapp.models import Product
+
+from django.contrib.auth.decorators import login_required
 
 # implementing AJAX to update cart item quantity without refresh
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
-# Create your views here.
-
-
+# Create your views here
+@login_required
 def viewCart(request):
-    template= 'my_cart.html'
-    cart_items = CartItem.objects.filter(user = request.user)
-    total_price = sum(item.sub_total for item in cart_items)
+
+    # select * from CartItem where user = request.user; 
+    # => this gives reference to collection of cart items (filter)
+    cartItems = CartItem.objects.filter(user = request.user)  
+    total_price = sum([float(item.product.price) * item.quantity for item in cartItems])
+    template = 'my_cart.html'
+    print(total_price)
     context = {
-        'items' : cart_items,
-        'total_price' : total_price
+        'items' : cartItems,
+        'total' : total_price
     }
+
     return render(request, template, context)
 
 @login_required
 def addToCart(request, product_id):
-    this_product = Product.objects.get(id = product_id)
-    this_user = request.user 
-    cart_item, created_at = CartItem.objects.get_or_create(product = this_product, user = this_user)
-    cart_item.quantity += 1
-    cart_item.save()
-    
-    return redirect(reverse_lazy('my_cart'))
 
-def remFromCart(request, cart_item_id):
+    # select * from Product where id = product_id; 
+    # => Gives reference to individual object (get)
+    this_product = Product.objects.get(id = product_id)
+    
+    cart_item, created_at = CartItem.objects.get_or_create(product = this_product, user = request.user)
+    cart_item.quantity += 1
+
+    cart_item.save() # insert or update the particular record
+
+    return redirect('view_cart')
+
+@login_required
+def remFromCart(request,cart_item_id):
     this_cart_item = CartItem.objects.get(id = cart_item_id)
-    this_cart_item.delete()
-    return redirect(reverse_lazy('my_cart'))
+    this_cart_item.delete() # this will delete the cart_item_object and its associated record in the CartItem table in db
+
+    return redirect('view_cart')
 
 
 

@@ -12,7 +12,7 @@
             const quantityElement = document.querySelector(`#quantity-${cartItemId}`);
             const totalPriceElement = document.querySelector(`#total-price-${cartItemId}`);
             const overallTotalElement = document.querySelector('#overall-total');
-    
+            
             if (data.quantity > 0) {
                 // Update quantity and total price for the cart item
                 quantityElement.textContent = data.quantity;
@@ -24,7 +24,7 @@
             }
     
             // Update overall total price
-            overallTotalElement.textContent = `${data.overall_total.toFixed(2)}`;
+            overallTotalElement.textContent = `${Number(data.overall_total).toFixed(2)}`;
         })
         .catch(error => console.error('Error:', error));
     }
